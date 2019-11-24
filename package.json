@@ -1,0 +1,15 @@
+{
+  "name": "cli-node",
+  "version": "1.0.0",
+  "description": "cli in node.js to create api or web application project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tiago rosa da costa <tiagorosadacost@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "inquirer": "^7.0.0",
+    "yargs": "^15.0.2"
+  }
+}
