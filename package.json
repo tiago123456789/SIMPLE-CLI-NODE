@@ -11,5 +11,8 @@
   "dependencies": {
     "inquirer": "^7.0.0",
     "yargs": "^15.0.2"
+  },
+  "bin": {
+    "node-project-cli": "./src/index.js"
   }
 }

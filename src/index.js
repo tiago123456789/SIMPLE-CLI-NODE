@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const arguments = require('yargs').argv;
 const inquirer = require("inquirer");
 const CreateProjectApiCommand = require("./command/CreateProjectApiCommand");
