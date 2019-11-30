@@ -28,7 +28,9 @@ const CreateProjectWebCommand = require("./command/CreateProjectWebCommand");
         });
         return;
     }
-    console.log("Command invalid!");
+    console.log(`Options:
+     --type=value | The values option are api or web | Example: --type=api or --type=web
+    `);
 })(arguments);
 
 

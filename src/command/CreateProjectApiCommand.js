@@ -2,37 +2,80 @@ const Command = require("./Command");
 const file = require("./../File");
 const path = require("path");
 const process = require("child_process");
-const indexTemplate = require("../template/Index");
+const template = require("../template/");
 
 class CreateProjectApiCommand extends Command {
 
     async execute(args) {
         console.log("--------------------- INIT CREATION PROJECT -----------------------");
+
         const pathProject = path.resolve(args.path, args.projectName);
         await file.createDirectory(pathProject);
-        console.log("--------------------- CREATE BASE DIRECTORY PROJECT -----------------------");
-        await file.createDirectory(path.resolve(pathProject, "src"));
-        console.log("--------------------- CREATE DIRECTORY src PROJECT -----------------------");
-        await file.createDirectory(path.resolve(pathProject, "src", "config"));
-        console.log("--------------------- CREATE DIRECTORY src/config PROJECT -----------------------");
-        await file.createDirectory(path.resolve(pathProject, "src", "routes"));
-        console.log("--------------------- CREATE DIRECTORY src/routes PROJECT -----------------------");
-        await file.createDirectory(path.resolve(pathProject, "src", "endpoints"));
-        console.log("--------------------- CREATE DIRECTORY src/endpoints PROJECT -----------------------");
-        await file.createDirectory(path.resolve(pathProject, "src", "exceptions"));
-        console.log("--------------------- CREATE DIRECTORY src/exceptions PROJECT -----------------------");
-        await file.createDirectory(path.resolve(pathProject, "src", "repositories"));
-        console.log("--------------------- CREATE DIRECTORY src/repositories PROJECT -----------------------");
-        await file.createDirectory(path.resolve(pathProject, "src", "services"));
-        console.log("--------------------- CREATE DIRECTORY src/services PROJECT -----------------------");
-        await file.createDirectory(path.resolve(pathProject, "src", "middlewares"));
-        console.log("--------------------- CREATE DIRECTORY src/middlewares PROJECT -----------------------");
-        await file.createFile(path.resolve(pathProject, "src", "index.js"), indexTemplate.api);
-        console.log("--------------------- CREATE FILE src/index.js PROJECT -----------------------");
 
-        let commandShell = `cd ${pathProject} && npm init -y && npm i -P express body-parser cors dotenv `
-        process.exec(commandShell, (error) => {
-            if (error) console.log(error);
+        await file.createDirectory(path.resolve(pathProject, "src"));
+        console.log("* src");
+
+        await file.createDirectory(path.resolve(pathProject, "src", "config"));
+        console.log("* src/config");
+
+        await file.createFile(path.resolve(pathProject, "src", "config", "Server.js"), template.configs.server.api);
+        console.log("-----> Server.js");
+
+        await file.createFile(path.resolve(pathProject, "src", "config", "Database.js"), template.configs.database.api);
+        console.log("-----> Database.js");
+
+        await file.createFile(
+            path.resolve(pathProject, "src", "config", "LoadEnvironmentVariable.js"),
+            template.configs.loadEnvironmentVariable.api
+        );
+        console.log("-----> LoadEnvironmentVariable.js");
+
+        await file.createDirectory(path.resolve(pathProject, "src", "routes"));
+        console.log("* src/routes");
+
+        await file.createFile(
+            path.resolve(pathProject, "src", "routes", "index.js"),
+            template.routes.app.api
+        );
+        console.log("-----> index.js");
+
+        await file.createDirectory(path.resolve(pathProject, "src", "endpoints"));
+        console.log("* src/endpoints");
+
+        await file.createDirectory(path.resolve(pathProject, "src", "exceptions"));
+        console.log("* src/exceptions");
+
+        await file.createDirectory(path.resolve(pathProject, "src", "repositories"));
+        console.log("* src/repositories");
+
+        await file.createFile(
+            path.resolve(pathProject, "src", "repositories", "Repository.js"),
+            template.repositories.repository.api
+        );
+        console.log("-----> Repository.js");
+
+        await file.createDirectory(path.resolve(pathProject, "src", "services"));
+        console.log("* src/services");
+
+        await file.createDirectory(path.resolve(pathProject, "src", "middlewares"));
+        console.log("* src/middlewares");
+
+        await file.createFile(
+            path.resolve(pathProject, "src", "middlewares", "HandlerExceptionsMiddleware.js"),
+            template.middlewares.handlerException.api
+        );
+        console.log("-----> HandlerExceptionsMiddleware.js");
+
+        await file.createFile(path.resolve(pathProject, "src", "index.js"), template.index.api);
+        console.log("---> index.js");
+
+        let commandShell = `cd ${pathProject} && npm init -y && npm i -P express body-parser cors dotenv mongoose `
+        process.exec(commandShell, (error, output) => {
+            if (error) {
+                console.log(error); 
+                return;
+            }
+            console.log(output);
             console.log("--------------------- FINISHED CREATION PROJECT -----------------------");
         });
     }
