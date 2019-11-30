@@ -1,10 +1,15 @@
-const Command = require("./Command");
+const CreateProjectCommand = require("./CreateProjectCommand");
 const file = require("./../File");
 const path = require("path");
 const process = require("child_process");
 const template = require("../template/");
 
-class CreateProjectApiCommand extends Command {
+class CreateProjectApiCommand extends CreateProjectCommand {
+
+    constructor() {
+        super();
+        this._shellCommand;
+    }
 
     async execute(args) {
         console.log("--------------------- INIT CREATION PROJECT -----------------------");
@@ -69,15 +74,14 @@ class CreateProjectApiCommand extends Command {
         await file.createFile(path.resolve(pathProject, "src", "index.js"), template.index.api);
         console.log("---> index.js");
 
-        let commandShell = `cd ${pathProject} && npm init -y && npm i -P express body-parser cors dotenv mongoose `
-        process.exec(commandShell, (error, output) => {
-            if (error) {
-                console.log(error); 
-                return;
-            }
-            console.log(output);
+        this._shellCommand = `cd ${pathProject} && npm init -y && npm i -P express body-parser cors dotenv mongoose `
+        this.executedShellCommand(() => {
             console.log("--------------------- FINISHED CREATION PROJECT -----------------------");
         });
+    }
+
+    getShellCommand() {
+        return this._shellCommand;
     }
 }
 
